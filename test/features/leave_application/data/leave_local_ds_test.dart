@@ -60,4 +60,27 @@ void main() {
     });
   });
 
+  group("Apply Leave", () {
+    void setUpApplySuccess() {
+      when(mockBox.put(any, any)).thenAnswer((_) => Future.value());
+    }
+
+    void setUpApplyFailure() {
+      when(mockBox.put(any, any)).thenThrow(Exception());
+    }
+
+    test("put() method should be called from hive box instance", () async {
+      setUpApplySuccess();
+      await localLeaveDs.applyLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(mockBox.put(any, any));
+    });
+
+    test("should throw exception when put() method throws exception", () async {
+      setUpApplyFailure();
+      expect(
+          () async => await localLeaveDs
+              .applyLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
+          throwsException);
+    });
+  });
 }
