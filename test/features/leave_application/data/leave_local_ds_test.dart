@@ -1,0 +1,63 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
+import 'package:leave_application/core/fixture_reader.dart';
+import 'package:leave_application/features/leave_application/data/leave_application_model.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'leave_local_ds_test.mocks.dart';
+import 'package:leave_application/features/leave_application/data/local_leave_ds.dart';
+
+@GenerateMocks([Box])
+void main() {
+  late LocalLeaveDSImpl localLeaveDs;
+  late MockBox mockBox;
+
+  final List<Map<String, dynamic>> leaveApplicationsMap =
+      (fixtureAsMap('leave_applications.json')['data']['leave_applications'] as List<dynamic>)
+          .map((rawLeaveApplication) => rawLeaveApplication as Map<String, dynamic>)
+          .toList();
+
+  setUp(() {
+    mockBox = MockBox();
+    localLeaveDs = LocalLeaveDSImpl(mockBox);
+  });
+
+  group("Fetch Leave Applications", () {
+    const String leaveApplicationsKey = "FetchLeaveApplicationsKey";
+    void setUpFetchSuccess() {
+      when(mockBox.get(leaveApplicationsKey)).thenReturn(leaveApplicationsMap);
+    }
+
+    void setUpFetchNull() {
+      when(mockBox.get(leaveApplicationsKey)).thenReturn(null);
+    }
+
+    void setUpFetchFailure() {
+      when(mockBox.get(leaveApplicationsKey)).thenThrow(Exception());
+    }
+
+    test("get() method should be called from hive box object", () {
+      setUpFetchSuccess();
+      localLeaveDs.fetchLeaveApplications();
+      verify(mockBox.get(leaveApplicationsKey));
+    });
+
+    test("Returns null when nothing is stored", () {
+      setUpFetchNull();
+      expect(localLeaveDs.fetchLeaveApplications(), null);
+    });
+
+    test("Should return List<LeaveApplicationModel> on fetch success", () {
+      setUpFetchSuccess();
+      List<LeaveApplicationModel>? leaveApplications = localLeaveDs.fetchLeaveApplications();
+      expect(leaveApplications,
+          leaveApplicationsMap.map((e) => LeaveApplicationModel.fromMap(e)).toList());
+    });
+
+    test("Exception should be thrown on fetch failure", () {
+      setUpFetchFailure();
+      expect(() => localLeaveDs.fetchLeaveApplications(), throwsException);
+    });
+  });
+
+}
