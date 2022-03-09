@@ -23,7 +23,6 @@ void main() {
   });
 
   group("Fetch Leave Applications", () {
-    const String leaveApplicationsKey = "FetchLeaveApplicationsKey";
     void setUpFetchSuccess() {
       when(mockBox.values).thenReturn(leaveApplicationsMap);
     }

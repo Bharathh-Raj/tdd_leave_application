@@ -6,7 +6,6 @@ abstract class LocalLeaveDS implements LeaveDS {}
 
 class LocalLeaveDSImpl implements LocalLeaveDS {
   final Box hiveBox;
-  static const String _fetchKey = "FetchLeaveApplicationsKey";
 
   LocalLeaveDSImpl(this.hiveBox);
 
