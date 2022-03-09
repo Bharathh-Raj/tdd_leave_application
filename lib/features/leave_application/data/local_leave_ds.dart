@@ -37,6 +37,6 @@ class LocalLeaveDSImpl implements LocalLeaveDS {
 
   @override
   Future<void> updateLeave(LeaveApplicationModel leaveApplicationModel) async {
-    // TODO: implement updateLeave
+    return await hiveBox.put(leaveApplicationModel.id, leaveApplicationModel.toMap());
   }
 }

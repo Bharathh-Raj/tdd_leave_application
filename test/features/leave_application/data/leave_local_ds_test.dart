@@ -107,4 +107,28 @@ void main() {
           throwsException);
     });
   });
+
+  group("Update Leave", () {
+    void setUpUpdateSuccess() {
+      when(mockBox.put(any, any)).thenAnswer((_) => Future.value());
+    }
+
+    void setUpUpdateFailure() {
+      when(mockBox.put(any, any)).thenThrow(Exception());
+    }
+
+    test("put() method should be called from hive box instance", () async {
+      setUpUpdateSuccess();
+      await localLeaveDs.updateLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(mockBox.put(any, any));
+    });
+
+    test("should throw exception when put() method throws exception", () async {
+      setUpUpdateFailure();
+      expect(
+          () async => await localLeaveDs
+              .updateLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
+          throwsException);
+    });
+  });
 }
