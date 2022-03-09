@@ -19,7 +19,7 @@ class LocalLeaveDSImpl implements LocalLeaveDS {
 
   @override
   Future<void> deleteLeave(LeaveApplicationModel leaveApplicationModel) async {
-    // TODO: implement deleteLeave
+    return await hiveBox.delete(leaveApplicationModel.id);
   }
 
   @override

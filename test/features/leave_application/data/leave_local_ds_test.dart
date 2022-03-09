@@ -83,4 +83,28 @@ void main() {
           throwsException);
     });
   });
+
+  group("Delete Leave", () {
+    void setUpDeleteSuccess() {
+      when(mockBox.delete(any)).thenAnswer((_) => Future.value());
+    }
+
+    void setUpDeleteFailure() {
+      when(mockBox.delete(any)).thenThrow(Exception());
+    }
+
+    test("delete() method should be called from hive box instance", () async {
+      setUpDeleteSuccess();
+      await localLeaveDs.deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(mockBox.delete('1'));
+    });
+
+    test("Exception should be thrown when put() method is called", () {
+      setUpDeleteFailure();
+      expect(
+          () async => await localLeaveDs
+              .deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
+          throwsException);
+    });
+  });
 }
