@@ -25,21 +25,21 @@ void main() {
   group("Fetch Leave Applications", () {
     const String leaveApplicationsKey = "FetchLeaveApplicationsKey";
     void setUpFetchSuccess() {
-      when(mockBox.get(leaveApplicationsKey)).thenReturn(leaveApplicationsMap);
+      when(mockBox.values).thenReturn(leaveApplicationsMap);
     }
 
     void setUpFetchNull() {
-      when(mockBox.get(leaveApplicationsKey)).thenReturn(null);
+      when(mockBox.values).thenReturn([]);
     }
 
     void setUpFetchFailure() {
-      when(mockBox.get(leaveApplicationsKey)).thenThrow(Exception());
+      when(mockBox.values).thenThrow(Exception());
     }
 
     test("get() method should be called from hive box object", () {
       setUpFetchSuccess();
       localLeaveDs.fetchLeaveApplications();
-      verify(mockBox.get(leaveApplicationsKey));
+      verify(mockBox.values);
     });
 
     test("Returns null when nothing is stored", () {

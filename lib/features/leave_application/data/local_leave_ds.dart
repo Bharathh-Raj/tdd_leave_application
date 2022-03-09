@@ -2,8 +2,6 @@ import 'package:hive/hive.dart';
 import 'package:leave_application/features/leave_application/data/leave_application_model.dart';
 import 'package:leave_application/features/leave_application/data/leave_ds.dart';
 
-import '../../../core/fixture_reader.dart';
-
 abstract class LocalLeaveDS implements LeaveDS {}
 
 class LocalLeaveDSImpl implements LocalLeaveDS {
@@ -24,11 +22,10 @@ class LocalLeaveDSImpl implements LocalLeaveDS {
 
   @override
   List<LeaveApplicationModel>? fetchLeaveApplications() {
-    final List<dynamic>? rawLeaveApplications = hiveBox.get(_fetchKey);
-    List<Map<String, dynamic>>? leaveApplicationsMap =
-        rawLeaveApplications?.map((e) => Map<String, dynamic>.from(e)).toList();
+    List<Map<String, dynamic>> leaveApplicationsMap =
+        hiveBox.values.map((e) => Map<String, dynamic>.from(e)).toList();
 
-    if (leaveApplicationsMap == null) return null;
+    if (leaveApplicationsMap.isEmpty) return null;
 
     List<LeaveApplicationModel> leaveApplications =
         leaveApplicationsMap.map((e) => LeaveApplicationModel.fromMap(e)).toList();
