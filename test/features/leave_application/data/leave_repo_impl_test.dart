@@ -100,4 +100,43 @@ void main() {
       expect(result, isInstanceOf<Left<Failure, void>>());
     });
   });
+
+  group("Update Leave", () {
+    LeaveApplication leaveApplication = LeaveApplication(
+        id: DateTime.now(),
+        leaveType: LeaveType.casualLeave,
+        fromDate: DateTime(2022),
+        toDate: DateTime(2023));
+
+    test("updateLeave() method from localLeaveDs instance should be called", () async {
+      localTestHelper.setUpUpdateSuccess();
+      await leaveRepoImpl.updateLeave(leaveApplication);
+      verify(leaveRepoImpl.localLeaveDS
+          .updateLeave(LeaveApplicationModel.fromParent(leaveApplication)));
+    });
+
+    test("Right should be returned on success", () async {
+      localTestHelper.setUpUpdateSuccess();
+      Either<Failure, void> result = await leaveRepoImpl.updateLeave(leaveApplication);
+      expect(result.isRight(), isTrue);
+    });
+
+    test("Right<void> should be returned on success", () async {
+      localTestHelper.setUpUpdateSuccess();
+      Either<Failure, void> result = await leaveRepoImpl.updateLeave(leaveApplication);
+      expect(result, isInstanceOf<Right<Failure, void>>());
+    });
+
+    test("Left should be returned on failure", () async {
+      localTestHelper.setUpUpdateFailure();
+      Either<Failure, void> result = await leaveRepoImpl.updateLeave(leaveApplication);
+      expect(result.isLeft(), isTrue);
+    });
+
+    test("Left<Failure> should be returned on failure", () async {
+      localTestHelper.setUpUpdateFailure();
+      Either<Failure, void> result = await leaveRepoImpl.updateLeave(leaveApplication);
+      expect(result, isInstanceOf<Left<Failure, void>>());
+    });
+  });
 }

@@ -38,8 +38,12 @@ class LeaveRepoImpl implements LeaveRepo {
   }
 
   @override
-  Future<Either<Failure, void>> updateLeave(LeaveApplication leaveApplication) {
-    // TODO: implement updateLeave
-    throw UnimplementedError();
+  Future<Either<Failure, void>> updateLeave(LeaveApplication leaveApplication) async {
+    try {
+      await localLeaveDS.updateLeave(LeaveApplicationModel.fromParent(leaveApplication));
+      return const Right(Unit);
+    } catch (e) {
+      return Left(Failure(messageToDisplay: "Update Leave Failed", errorObject: e));
+    }
   }
 }
