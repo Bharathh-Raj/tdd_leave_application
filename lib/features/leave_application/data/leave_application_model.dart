@@ -9,6 +9,15 @@ class LeaveApplicationModel extends LeaveApplication {
       String? reason})
       : super(id: id, fromDate: fromDate, toDate: toDate, leaveType: leaveType, reason: reason);
 
+  factory LeaveApplicationModel.fromParent(LeaveApplication leaveApplication) {
+    return LeaveApplicationModel(
+        id: leaveApplication.id,
+        fromDate: leaveApplication.fromDate,
+        leaveType: leaveApplication.leaveType,
+        toDate: leaveApplication.toDate,
+        reason: leaveApplication.reason);
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
