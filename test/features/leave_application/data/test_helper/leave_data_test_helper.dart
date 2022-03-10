@@ -8,7 +8,6 @@ import 'leave_data_test_helper.mocks.dart';
 
 @GenerateMocks([Box])
 class LocalLeaveDataTestHelper {
-  late final LocalLeaveDSImpl localLeaveDs = LocalLeaveDSImpl(mockBox);
   final MockBox mockBox = MockBox();
 
   final List<Map<String, dynamic>> leaveApplicationsMap =
