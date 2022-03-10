@@ -1,131 +1,88 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive/hive.dart';
 import 'package:leave_application/core/fixture_reader.dart';
 import 'package:leave_application/features/leave_application/data/leave_application_model.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'leave_local_ds_test.mocks.dart';
-import 'package:leave_application/features/leave_application/data/local_leave_ds.dart';
+import 'test_helper/leave_data_test_helper.dart';
 
-@GenerateMocks([Box])
 void main() {
-  late LocalLeaveDSImpl localLeaveDs;
-  late MockBox mockBox;
-
-  final List<Map<String, dynamic>> leaveApplicationsMap =
-      (fixtureAsMap('leave_applications.json')['data']['leave_applications'] as List<dynamic>)
-          .map((rawLeaveApplication) => rawLeaveApplication as Map<String, dynamic>)
-          .toList();
+  late LocalLeaveDataTestHelper testHelper;
 
   setUp(() {
-    mockBox = MockBox();
-    localLeaveDs = LocalLeaveDSImpl(mockBox);
+    testHelper = LocalLeaveDataTestHelper();
   });
 
   group("Fetch Leave Applications", () {
-    void setUpFetchSuccess() {
-      when(mockBox.values).thenReturn(leaveApplicationsMap);
-    }
-
-    void setUpFetchNull() {
-      when(mockBox.values).thenReturn([]);
-    }
-
-    void setUpFetchFailure() {
-      when(mockBox.values).thenThrow(Exception());
-    }
-
     test("get() method should be called from hive box object", () {
-      setUpFetchSuccess();
-      localLeaveDs.fetchLeaveApplications();
-      verify(mockBox.values);
+      testHelper.setUpFetchSuccess();
+      testHelper.localLeaveDs.fetchLeaveApplications();
+      verify(testHelper.mockBox.values);
     });
 
     test("Returns null when nothing is stored", () {
-      setUpFetchNull();
-      expect(localLeaveDs.fetchLeaveApplications(), null);
+      testHelper.setUpFetchNull();
+      expect(testHelper.localLeaveDs.fetchLeaveApplications(), null);
     });
 
     test("Should return List<LeaveApplicationModel> on fetch success", () {
-      setUpFetchSuccess();
-      List<LeaveApplicationModel>? leaveApplications = localLeaveDs.fetchLeaveApplications();
+      testHelper.setUpFetchSuccess();
+      List<LeaveApplicationModel>? leaveApplications =
+          testHelper.localLeaveDs.fetchLeaveApplications();
       expect(leaveApplications,
-          leaveApplicationsMap.map((e) => LeaveApplicationModel.fromMap(e)).toList());
+          testHelper.leaveApplicationsMap.map((e) => LeaveApplicationModel.fromMap(e)).toList());
     });
 
     test("Exception should be thrown on fetch failure", () {
-      setUpFetchFailure();
-      expect(() => localLeaveDs.fetchLeaveApplications(), throwsException);
+      testHelper.setUpFetchFailure();
+      expect(() => testHelper.localLeaveDs.fetchLeaveApplications(), throwsException);
     });
   });
 
   group("Apply Leave", () {
-    void setUpApplySuccess() {
-      when(mockBox.put(any, any)).thenAnswer((_) => Future.value());
-    }
-
-    void setUpApplyFailure() {
-      when(mockBox.put(any, any)).thenThrow(Exception());
-    }
-
     test("put() method should be called from hive box instance", () async {
-      setUpApplySuccess();
-      await localLeaveDs.applyLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
-      verify(mockBox.put(any, any));
+      testHelper.setUpApplySuccess();
+      await testHelper.localLeaveDs
+          .applyLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(testHelper.mockBox.put(any, any));
     });
 
     test("should throw exception when put() method throws exception", () async {
-      setUpApplyFailure();
+      testHelper.setUpApplyFailure();
       expect(
-          () async => await localLeaveDs
+          () async => await testHelper.localLeaveDs
               .applyLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
           throwsException);
     });
   });
 
   group("Delete Leave", () {
-    void setUpDeleteSuccess() {
-      when(mockBox.delete(any)).thenAnswer((_) => Future.value());
-    }
-
-    void setUpDeleteFailure() {
-      when(mockBox.delete(any)).thenThrow(Exception());
-    }
-
     test("delete() method should be called from hive box instance", () async {
-      setUpDeleteSuccess();
-      await localLeaveDs.deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
-      verify(mockBox.delete('1'));
+      testHelper.setUpDeleteSuccess();
+      await testHelper.localLeaveDs
+          .deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(testHelper.mockBox.delete('1'));
     });
 
     test("Exception should be thrown when put() method is called", () {
-      setUpDeleteFailure();
+      testHelper.setUpDeleteFailure();
       expect(
-          () async => await localLeaveDs
+          () async => await testHelper.localLeaveDs
               .deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
           throwsException);
     });
   });
 
   group("Update Leave", () {
-    void setUpUpdateSuccess() {
-      when(mockBox.put(any, any)).thenAnswer((_) => Future.value());
-    }
-
-    void setUpUpdateFailure() {
-      when(mockBox.put(any, any)).thenThrow(Exception());
-    }
-
     test("put() method should be called from hive box instance", () async {
-      setUpUpdateSuccess();
-      await localLeaveDs.updateLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
-      verify(mockBox.put(any, any));
+      testHelper.setUpUpdateSuccess();
+      await testHelper.localLeaveDs
+          .updateLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
+      verify(testHelper.mockBox.put(any, any));
     });
 
     test("should throw exception when put() method throws exception", () async {
-      setUpUpdateFailure();
+      testHelper.setUpUpdateFailure();
       expect(
-          () async => await localLeaveDs
+          () async => await testHelper.localLeaveDs
               .updateLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json'))),
           throwsException);
     });
