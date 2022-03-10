@@ -2,24 +2,16 @@ import 'package:leave_application/features/leave_application/domain/leave_applic
 
 class LeaveApplicationModel extends LeaveApplication {
   LeaveApplicationModel(
-      {required String id,
-      required DateTime applyDate,
+      {required DateTime id,
       required DateTime fromDate,
       DateTime? toDate,
       required String leaveType,
       String? reason})
-      : super(
-            id: id,
-            applyDate: applyDate,
-            fromDate: fromDate,
-            toDate: toDate,
-            leaveType: leaveType,
-            reason: reason);
+      : super(id: id, fromDate: fromDate, toDate: toDate, leaveType: leaveType, reason: reason);
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'applyDate': applyDate,
       'fromDate': fromDate,
       'toDate': toDate,
       'leaveType': leaveType,
@@ -31,8 +23,7 @@ class LeaveApplicationModel extends LeaveApplication {
     DateTime? toDate = map['toDate'] != null ? DateTime.parse(map['toDate'] as String) : null;
     String? reason = map['reason'] != null ? map['reason'] as String : null;
     return LeaveApplicationModel(
-      id: map['id'] as String,
-      applyDate: DateTime.parse(map['applyDate'] as String),
+      id: DateTime.parse(map['id'] as String),
       fromDate: DateTime.parse(map['fromDate'] as String),
       toDate: toDate,
       leaveType: map['leaveType'] as String,

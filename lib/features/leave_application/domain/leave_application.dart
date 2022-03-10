@@ -1,8 +1,8 @@
 import 'leave_type.dart';
 
-abstract class LeaveApplication {
-  final String id;
-  final DateTime applyDate;
+class LeaveApplication {
+  /// id is just the applied DateTime
+  final DateTime id;
   final DateTime fromDate;
   final DateTime? toDate;
   final String leaveType;
@@ -10,7 +10,6 @@ abstract class LeaveApplication {
 
   LeaveApplication({
     required this.id,
-    required this.applyDate,
     required this.fromDate,
     this.toDate,
     required this.leaveType,

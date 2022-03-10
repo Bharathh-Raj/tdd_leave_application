@@ -59,7 +59,7 @@ void main() {
     test("delete() method should be called from hive box instance", () async {
       testHelper.setUpDeleteSuccess();
       await localLeaveDs.deleteLeave(LeaveApplicationModel.fromMap(fixtureAsMap('leave_01.json')));
-      verify(testHelper.mockBox.delete('1'));
+      verify(testHelper.mockBox.delete('2022-03-09 00:00:00.000'));
     });
 
     test("Exception should be thrown when put() method is called", () {

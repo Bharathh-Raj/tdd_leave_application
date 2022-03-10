@@ -11,12 +11,12 @@ class LocalLeaveDSImpl implements LocalLeaveDS {
 
   @override
   Future<void> applyLeave(LeaveApplicationModel leaveApplicationModel) async {
-    return await hiveBox.put(leaveApplicationModel.id, leaveApplicationModel.toMap());
+    return await hiveBox.put(leaveApplicationModel.id.toString(), leaveApplicationModel.toMap());
   }
 
   @override
   Future<void> deleteLeave(LeaveApplicationModel leaveApplicationModel) async {
-    return await hiveBox.delete(leaveApplicationModel.id);
+    return await hiveBox.delete(leaveApplicationModel.id.toString());
   }
 
   @override

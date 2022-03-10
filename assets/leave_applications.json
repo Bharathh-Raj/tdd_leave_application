@@ -2,32 +2,28 @@
   "data": {
     "leave_applications": [
       {
-        "id": "1",
-        "applyDate": "2022-03-09",
+        "id": "2022-03-09 00:00:00.000",
         "fromDate": "2022-03-09",
         "toDate": null,
         "leaveType": "Sick Leave",
         "reason": null
       },
       {
-        "id": "2",
-        "applyDate": "2022-03-08",
+        "id": "2022-03-08 00:00:00.000",
         "fromDate": "2022-03-19",
         "toDate": "2022-03-22",
         "leaveType": "Casual Leave",
         "reason": "Going for tour"
       },
       {
-        "id": "3",
-        "applyDate": "2022-03-07",
+        "id": "2022-03-07 00:00:00.000",
         "fromDate": "2022-03-09",
         "toDate": "2022-03-10",
         "leaveType": "Unpaid Leave",
         "reason": null
       },
       {
-        "id": "4",
-        "applyDate": "2022-01-06",
+        "id": "2022-01-06 00:00:00.000",
         "fromDate": "2022-01-09",
         "toDate": null,
         "leaveType": "Sick Leave",
