@@ -28,3 +28,4 @@ doc/api/
 
 #Android Studio
 .idea/
+coverage/lcov.info
