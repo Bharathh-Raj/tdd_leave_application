@@ -20,32 +20,84 @@ void main() {
   });
 
   group("Apply Leave", () {
-    late LeaveApplication leaveApplication;
-    setUp(() async {
-      localTestHelper.setUpApplySuccess();
-      leaveApplication = LeaveApplication(
-          id: DateTime.now(),
-          leaveType: LeaveType.casualLeave,
-          fromDate: DateTime(2022),
-          toDate: DateTime(2023));
-    });
+    LeaveApplication leaveApplication = LeaveApplication(
+        id: DateTime.now(),
+        leaveType: LeaveType.casualLeave,
+        fromDate: DateTime(2022),
+        toDate: DateTime(2023));
 
     test("applyLeave() method of localLeaveDS should be called", () async {
+      localTestHelper.setUpApplySuccess();
       await leaveRepoImpl.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
       verify(leaveRepoImpl.localLeaveDS
           .applyLeave(LeaveApplicationModel.fromParent(leaveApplication)));
     });
 
     test("Right should be returned on success", () async {
+      localTestHelper.setUpApplySuccess();
       Either<Failure, void> response =
           await leaveRepoImpl.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
       expect(response.isRight(), isTrue);
     });
 
     test("Right<Unit> should be returned on success", () async {
+      localTestHelper.setUpApplySuccess();
       Either<Failure, void> response =
           await leaveRepoImpl.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
       expect(response, isInstanceOf<Right<Failure, void>>());
+    });
+
+    test("Left should be returned on failure", () async {
+      localTestHelper.setUpApplyFailure();
+      Either<Failure, void> response =
+          await leaveRepoImpl.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
+      expect(response.isLeft(), isTrue);
+    });
+
+    test("Left<Failure> should be returned on failure", () async {
+      localTestHelper.setUpApplyFailure();
+      Either<Failure, void> response =
+          await leaveRepoImpl.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
+      expect(response, isInstanceOf<Left<Failure, void>>());
+    });
+  });
+
+  group("Delete Leave", () {
+    LeaveApplication leaveApplication = LeaveApplication(
+        id: DateTime.now(),
+        leaveType: LeaveType.casualLeave,
+        fromDate: DateTime(2022),
+        toDate: DateTime(2023));
+
+    test("deleteLeave() method from localLeaveDs instance should be called", () async {
+      localTestHelper.setUpDeleteSuccess();
+      await leaveRepoImpl.deleteLeave(leaveApplication);
+      verify(leaveRepoImpl.localLeaveDS
+          .deleteLeave(LeaveApplicationModel.fromParent(leaveApplication)));
+    });
+
+    test("Right should be returned on success", () async {
+      localTestHelper.setUpDeleteSuccess();
+      Either<Failure, void> result = await leaveRepoImpl.deleteLeave(leaveApplication);
+      expect(result.isRight(), isTrue);
+    });
+
+    test("Right<void> should be returned on success", () async {
+      localTestHelper.setUpDeleteSuccess();
+      Either<Failure, void> result = await leaveRepoImpl.deleteLeave(leaveApplication);
+      expect(result, isInstanceOf<Right<Failure, void>>());
+    });
+
+    test("Left should be returned on failure", () async {
+      localTestHelper.setUpDeleteFailure();
+      Either<Failure, void> result = await leaveRepoImpl.deleteLeave(leaveApplication);
+      expect(result.isLeft(), isTrue);
+    });
+
+    test("Left<Failure> should be returned on failure", () async {
+      localTestHelper.setUpDeleteFailure();
+      Either<Failure, void> result = await leaveRepoImpl.deleteLeave(leaveApplication);
+      expect(result, isInstanceOf<Left<Failure, void>>());
     });
   });
 }

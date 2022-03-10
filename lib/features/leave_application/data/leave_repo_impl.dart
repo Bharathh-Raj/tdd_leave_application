@@ -22,9 +22,13 @@ class LeaveRepoImpl implements LeaveRepo {
   }
 
   @override
-  Future<Either<Failure, void>> deleteLeave(LeaveApplication leaveApplication) {
-    // TODO: implement deleteLeave
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteLeave(LeaveApplication leaveApplication) async {
+    try {
+      await localLeaveDS.deleteLeave(LeaveApplicationModel.fromParent(leaveApplication));
+      return const Right(Unit);
+    } catch (e) {
+      return Left(Failure(messageToDisplay: "Delete Leave Failed", errorObject: e));
+    }
   }
 
   @override
