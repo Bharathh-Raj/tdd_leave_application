@@ -7,5 +7,5 @@ abstract class LeaveRepo {
   Future<Either<Failure, void>> applyLeave(LeaveApplication leaveApplication);
   Future<Either<Failure, void>> updateLeave(LeaveApplication leaveApplication);
   Future<Either<Failure, void>> deleteLeave(LeaveApplication leaveApplication);
-  Future<Either<Failure, List<LeaveApplication>>> fetchLeaveApplications();
+  Future<Either<Failure, List<LeaveApplication>?>> fetchLeaveApplications();
 }

@@ -32,9 +32,14 @@ class LeaveRepoImpl implements LeaveRepo {
   }
 
   @override
-  Future<Either<Failure, List<LeaveApplication>>> fetchLeaveApplications() {
-    // TODO: implement fetchLeaveApplications
-    throw UnimplementedError();
+  Future<Either<Failure, List<LeaveApplication>?>> fetchLeaveApplications() {
+    try {
+      List<LeaveApplication>? leaveApplications = localLeaveDS.fetchLeaveApplications();
+      return Future.value(Right(leaveApplications));
+    } catch (e) {
+      return Future.value(
+          Left(Failure(messageToDisplay: "Fetch Leave Applications Failed", errorObject: e)));
+    }
   }
 
   @override

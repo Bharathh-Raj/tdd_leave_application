@@ -139,4 +139,58 @@ void main() {
       expect(result, isInstanceOf<Left<Failure, void>>());
     });
   });
+
+  group("Fetch Leave Application", () {
+    test("fetchLeaveApplication() method should be called from localDS instance", () async {
+      localTestHelper.setUpFetchNull();
+      await leaveRepoImpl.fetchLeaveApplications();
+      verify(leaveRepoImpl.localLeaveDS.fetchLeaveApplications());
+    });
+
+    test("Right should be returned on success", () async {
+      localTestHelper.setUpFetchNull();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect(result.isRight(), isTrue);
+    });
+
+    test("Right<List<LeaveApplication>?> should be returned on success", () async {
+      localTestHelper.setUpFetchNull();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect(result, isInstanceOf<Right<Failure, List<LeaveApplication>?>>());
+    });
+
+    test("null should be returned on success with no applications", () async {
+      localTestHelper.setUpFetchNull();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect((result as Right<Failure, List<LeaveApplication>?>).value, isNull);
+    });
+
+    test("List<LeaveApplication> should be returned on success with some applications", () async {
+      localTestHelper.setUpFetchSuccess();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect(
+          (result as Right<Failure, List<LeaveApplication>?>).value,
+          localTestHelper.leaveApplicationsMap
+              .map((e) => LeaveApplicationModel.fromMap(e))
+              .toList());
+    });
+
+    test("Left should be returned on failure", () async {
+      localTestHelper.setUpFetchFailure();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect(result.isLeft(), isTrue);
+    });
+
+    test("Left<Failure> should be returned on failure", () async {
+      localTestHelper.setUpFetchFailure();
+      Either<Failure, List<LeaveApplication>?> result =
+          await leaveRepoImpl.fetchLeaveApplications();
+      expect(result, isInstanceOf<Left<Failure, List<LeaveApplication>?>>());
+    });
+  });
 }
