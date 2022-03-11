@@ -40,7 +40,7 @@ class LeaveDashboardPage extends StatelessWidget {
             height: 24,
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                color: Color(0xfff9f8fb)),
+                color: ColorConstants.bgColor),
           ),
         )),
         SliverList(

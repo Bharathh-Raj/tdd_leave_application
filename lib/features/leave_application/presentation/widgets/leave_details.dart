@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leave_application/core/constants/color_constants.dart';
 import 'package:leave_application/core/extensions/date_display_extension.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
 
@@ -9,7 +10,7 @@ class LeaveDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xfff9f8fb),
+      color: ColorConstants.bgColor,
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

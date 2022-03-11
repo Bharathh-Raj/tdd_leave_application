@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leave_application/core/constants/color_constants.dart';
 
 class BGPainter extends CustomPainter {
   @override
@@ -7,13 +8,13 @@ class BGPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..shader =
           const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [
-        Color(0xff5C91F9),
-        Color(0xff0065FF),
+        ColorConstants.primaryColorVariant,
+        ColorConstants.primaryColor,
       ]).createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
 
     canvas.drawRect(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), bgPaint);
 
-    Paint circlePaint = Paint()..color = const Color(0xff5C91F9).withOpacity(0.25);
+    Paint circlePaint = Paint()..color = ColorConstants.primaryColorVariant.withOpacity(0.25);
     canvas.drawCircle(Offset(size.width - 60, 20), 150, circlePaint);
   }
 
