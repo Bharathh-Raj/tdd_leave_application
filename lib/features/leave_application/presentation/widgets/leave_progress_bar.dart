@@ -16,8 +16,14 @@ class LeaveProgressBar extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('$currentLeaveCount Leave'),
-            Text('$maxLeaveCount Leaves'),
+            Text(
+              '$currentLeaveCount Leave',
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              '$maxLeaveCount Leaves',
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
         const SizedBox(

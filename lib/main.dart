@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: StringConstants.appTitle,
-      theme: ThemeData.dark(),
-      home: const LeaveDashboardPage(),
+      home: LeaveDashboardPage(),
     );
   }
 }

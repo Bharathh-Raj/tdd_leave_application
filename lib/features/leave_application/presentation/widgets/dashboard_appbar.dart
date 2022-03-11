@@ -40,7 +40,10 @@ class DashboardAppbar extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Good Morning, Bharath"),
+                                const Text(
+                                  "Good Morning, Bharath",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 const SizedBox(
                                   height: 12,
                                 ),
@@ -49,7 +52,7 @@ class DashboardAppbar extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5!
-                                      .copyWith(fontWeight: FontWeight.bold),
+                                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -88,11 +91,14 @@ class CollapsedAppBar extends StatelessWidget {
             ),
             Text(
               "Home",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
             ),
           ],
         ),
-        const Icon(Icons.notifications),
+        const Icon(
+          Icons.notifications,
+          color: Colors.white,
+        ),
       ],
     );
   }
