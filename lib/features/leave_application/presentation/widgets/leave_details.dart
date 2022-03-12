@@ -31,7 +31,10 @@ class LeaveDetails extends StatelessWidget {
               children: [
                 _DetailCard(
                   title: "Applied Duration",
-                  detail: leaveApplication.fromDate.toDisplayDate(),
+                  detail: leaveApplication.fromDate.toDisplayDate() +
+                      (leaveApplication.toDate?.toDisplayDate() != null
+                          ? "  to  " + leaveApplication.toDate!.toDisplayDate()
+                          : ""),
                   icon: Icons.calendar_month,
                   iconColor: const Color(0xffB787FC),
                 ),
