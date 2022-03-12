@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leave_application/core/constants/color_constants.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
+import 'package:leave_application/features/leave_application/presentation/widgets/BgContainer.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/dashboard_appbar.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_details.dart';
 
@@ -15,7 +16,6 @@ class LeaveDashboardPage extends StatelessWidget {
     LeaveApplication(
         id: DateTime.now(),
         fromDate: DateTime(2022, 3, 1),
-        toDate: DateTime(2022, 3, 2),
         leaveType: "Unpaid Leave",
         reason: "Rest"),
     LeaveApplication(
@@ -30,27 +30,43 @@ class LeaveDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        const DashboardAppbar(),
-        SliverToBoxAdapter(
-            child: ColoredBox(
-          color: ColorConstants.primaryColor,
-          child: Container(
-            height: 24,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                color: ColorConstants.bgColor),
+      body: CustomScrollView(
+        slivers: [
+          const DashboardAppbar(),
+          SliverToBoxAdapter(
+              child: ColoredBox(
+            color: ColorConstants.primaryColor,
+            child: Container(
+              height: 24,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  color: ColorConstants.bgColor),
+            ),
+          )),
+          SliverList(
+              delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return LeaveDetails(leaveApplication: leaveApplicationList[index]);
+            },
+            childCount: leaveApplicationList.length,
+          )),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 180,
+        height: 68,
+        padding: const EdgeInsets.only(bottom: 24),
+        child: BgContainer(
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            onPressed: () {},
+            child: const Text("Apply for Leave"),
+            shape:
+                const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
           ),
-        )),
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return LeaveDetails(leaveApplication: leaveApplicationList[index]);
-          },
-          childCount: leaveApplicationList.length,
-        )),
-      ],
-    ));
+        ),
+      ),
+    );
   }
 }
