@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:leave_application/core/constants/color_constants.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/BgContainer.dart';
+import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/dashboard_appbar.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_details.dart';
 
@@ -33,16 +34,7 @@ class LeaveDashboardPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           const DashboardAppbar(),
-          SliverToBoxAdapter(
-              child: ColoredBox(
-            color: ColorConstants.primaryColor,
-            child: Container(
-              height: 24,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  color: ColorConstants.bgColor),
-            ),
-          )),
+          const SliverToBoxAdapter(child: CurvedBox()),
           SliverList(
               delegate: SliverChildBuilderDelegate(
             (context, index) {
