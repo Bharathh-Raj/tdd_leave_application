@@ -1,25 +1,37 @@
-const List<String> _months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
+const List<String> months = [
+  'January',
+  'February',
+  'March',
+  'April',
   'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
 ];
 
-extension DisplayDate on DateTime {
+extension DateTimeExtension on DateTime {
   String toDisplayDate() {
     final DateTime _localDateTime = toLocal();
     return _localDateTime.day.toString() +
         " " +
-        _months[_localDateTime.month - 1] +
+        months[_localDateTime.month - 1].substring(0, 3) +
         ", " +
         _localDateTime.year.toString();
+  }
+
+  DateTime addDay({int daysToAdd = 1}) {
+    return add(Duration(days: daysToAdd));
+  }
+
+  bool beforeOrEqual(DateTime dateTime) {
+    return isBefore(dateTime) || this == dateTime;
+  }
+
+  String toMonth() {
+    return months[month - 1];
   }
 }
