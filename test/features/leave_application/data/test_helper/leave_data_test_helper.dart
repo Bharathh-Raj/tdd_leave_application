@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:leave_application/core/fixture_reader.dart';
+import 'package:leave_application/features/leave_application/domain/leave_application.dart';
+import 'package:leave_application/features/leave_application/domain/leave_type.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -13,6 +15,9 @@ class LocalLeaveDataTestHelper {
       (fixtureAsMap('leave_applications.json')['data']['leave_applications'] as List<dynamic>)
           .map((rawLeaveApplication) => rawLeaveApplication as Map<String, dynamic>)
           .toList();
+
+  final LeaveApplication leaveApplication = LeaveApplication(
+      id: DateTime(2022, 3, 21), fromDate: DateTime(2022, 3, 22), leaveType: LeaveType.casualLeave);
 
   //region Fetch Leave Applications
   void setUpFetchSuccess() {
