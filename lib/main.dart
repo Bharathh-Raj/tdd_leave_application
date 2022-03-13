@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:leave_application/core/constants/string_constants.dart';
 import 'package:leave_application/features/leave_application/presentation/leave_dashboard_page.dart';
+import 'package:leave_application/service_locator.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.light,
   ));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await ServiceLocator.init();
   runApp(const MyApp());
 }
 
