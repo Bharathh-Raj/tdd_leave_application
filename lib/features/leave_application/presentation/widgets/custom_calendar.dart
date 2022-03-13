@@ -4,21 +4,25 @@ import 'package:leave_application/core/extensions/date_display_extension.dart';
 import '../../domain/my_calendar.dart';
 import 'date_highlighter_paint.dart';
 
-class CustomCalendar extends StatefulWidget {
+typedef DateUpdateFunction = void Function(DateTime selectedDate);
+
+class CustomCalendar extends StatelessWidget {
   final DateTime calendarMonth;
-  const CustomCalendar({Key? key, required this.calendarMonth}) : super(key: key);
+  final DateTime? selectedFromDate;
+  final DateTime? selectedToDate;
+  final DateUpdateFunction dateUpdateFunction;
 
-  @override
-  State<CustomCalendar> createState() => _CustomCalendarState();
-}
+  const CustomCalendar(
+      {Key? key,
+      required this.calendarMonth,
+      this.selectedFromDate,
+      this.selectedToDate,
+      required this.dateUpdateFunction})
+      : super(key: key);
 
-class _CustomCalendarState extends State<CustomCalendar> {
   final double cellHeight = 48;
-  final double cellWidth = 56;
+  final double cellWidth = 60;
   final double selectionSide = 32;
-
-  DateTime? fromDate;
-  DateTime? toDate;
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +49,24 @@ class _CustomCalendarState extends State<CustomCalendar> {
     return DataColumn(
         label: SizedBox(
             width: cellWidth,
-            child: Text(day, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))));
+            child: Text(day, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16))));
   }
 
   List<DataRow> getWeekRowList() {
     List<DataRow> weekRowList = [];
     final int weekCount =
-        MyCalendar.getWeekCount(month: widget.calendarMonth.month, year: widget.calendarMonth.year);
+        MyCalendar.getWeekCount(month: calendarMonth.month, year: calendarMonth.year);
 
     for (int i = 1; i <= weekCount; i++) {
       final DateTimeRange range = MyCalendar.getWeekRowRange(
-          rowNum: i, month: widget.calendarMonth.month, year: widget.calendarMonth.year);
+          rowNum: i, month: calendarMonth.month, year: calendarMonth.year);
 
       List<DataCell> weekRow = [];
       for (DateTime currentDay = range.start;
           currentDay.beforeOrEqual(range.end);
           currentDay = currentDay.addDay()) {
         weekRow.add(DataCell(SizedBox(width: cellWidth, child: dateEntry(currentDay)), onTap: () {
-          setState(() {
-            if (fromDate == null) {
-              fromDate = currentDay;
-            } else if (currentDay.isBefore(fromDate!)) {
-              fromDate = currentDay;
-              toDate = null;
-            } else if (toDate == null) {
-              toDate = currentDay;
-            } else {
-              fromDate = currentDay;
-              toDate = null;
-            }
-          });
+          dateUpdateFunction(currentDay);
         }));
       }
 
@@ -84,14 +76,14 @@ class _CustomCalendarState extends State<CustomCalendar> {
   }
 
   Widget dateEntry(DateTime currentDay) {
-    final bool isSelected = currentDay == fromDate || currentDay == toDate;
+    final bool isSelected = currentDay == selectedFromDate || currentDay == selectedToDate;
     final Widget child = Center(
       child: Text(
         currentDay.day.toString(),
         style: TextStyle(
             color: isSelected
                 ? Colors.blue
-                : currentDay.month != widget.calendarMonth.month
+                : currentDay.month != calendarMonth.month
                     ? Colors.white38
                     : Colors.white),
       ),
@@ -103,14 +95,15 @@ class _CustomCalendarState extends State<CustomCalendar> {
         // width: selectionSide,
         child: CustomPaint(
           painter: DateHighlighterPaint(
-              isToDateNull: toDate == null, paintTowardsRight: currentDay == fromDate),
+              isToDateNull: selectedToDate == null,
+              paintTowardsRight: currentDay == selectedFromDate),
           child: child,
         ),
       ));
-    } else if (fromDate != null &&
-        toDate != null &&
-        currentDay.isAfter(fromDate!) &&
-        currentDay.isBefore(toDate!)) {
+    } else if (selectedFromDate != null &&
+        selectedToDate != null &&
+        currentDay.isAfter(selectedFromDate!) &&
+        currentDay.isBefore(selectedToDate!)) {
       return SizedBox(
         height: selectionSide,
         width: selectionSide,

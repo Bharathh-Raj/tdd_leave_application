@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+typedef LeaveReasonUpdateFunction = void Function(String value);
+
 class LeaveReasonWidget extends StatelessWidget {
-  const LeaveReasonWidget({Key? key}) : super(key: key);
+  final LeaveReasonUpdateFunction updateFunction;
+  const LeaveReasonWidget({Key? key, required this.updateFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,8 @@ class LeaveReasonWidget extends StatelessWidget {
       TextField(
         keyboardType: TextInputType.multiline,
         maxLines: 5,
-        decoration: InputDecoration.collapsed(
+        onChanged: updateFunction,
+        decoration: const InputDecoration.collapsed(
             hintText: "Type your reason here...", filled: true, fillColor: Color(0xffF7F6F6)),
       )
     ]);

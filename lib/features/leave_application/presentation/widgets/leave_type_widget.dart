@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../domain/leave_type.dart';
 
-class LeaveTypeWidget extends StatefulWidget {
-  const LeaveTypeWidget({Key? key}) : super(key: key);
+typedef LeaveTypeUpdateFunction = void Function(String? selectedType);
 
-  @override
-  State<LeaveTypeWidget> createState() => _LeaveTypeWidgetState();
-}
+class LeaveTypeWidget extends StatelessWidget {
+  final String selectedType;
+  final LeaveTypeUpdateFunction leaveTypeUpdateFunction;
 
-class _LeaveTypeWidgetState extends State<LeaveTypeWidget> {
-  String _selectedType = LeaveType.values.first;
+  const LeaveTypeWidget(
+      {Key? key, required this.selectedType, required this.leaveTypeUpdateFunction})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,7 +27,7 @@ class _LeaveTypeWidgetState extends State<LeaveTypeWidget> {
             child: DropdownButton<String>(
               isExpanded: true,
               icon: const Icon(Icons.keyboard_arrow_down_rounded),
-              value: _selectedType,
+              value: selectedType,
               style: const TextStyle(
                   color: Color(0xff132536), fontWeight: FontWeight.w500, fontSize: 14),
               items: LeaveType.values
@@ -36,11 +36,7 @@ class _LeaveTypeWidgetState extends State<LeaveTypeWidget> {
                         child: Text(e),
                       ))
                   .toList(),
-              onChanged: (selectedType) {
-                setState(() {
-                  _selectedType = selectedType!;
-                });
-              },
+              onChanged: leaveTypeUpdateFunction,
             ),
           ),
         ),
