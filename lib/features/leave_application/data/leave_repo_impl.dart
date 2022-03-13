@@ -15,7 +15,7 @@ class LeaveRepoImpl implements LeaveRepo {
   Future<Either<Failure, void>> applyLeave(LeaveApplication leaveApplication) async {
     try {
       await localLeaveDS.applyLeave(LeaveApplicationModel.fromParent(leaveApplication));
-      return const Right(Unit);
+      return const Right(null);
     } catch (e) {
       return Left(Failure(messageToDisplay: "Apply Leave Failed", errorObject: e));
     }
@@ -25,7 +25,7 @@ class LeaveRepoImpl implements LeaveRepo {
   Future<Either<Failure, void>> deleteLeave(LeaveApplication leaveApplication) async {
     try {
       await localLeaveDS.deleteLeave(LeaveApplicationModel.fromParent(leaveApplication));
-      return const Right(Unit);
+      return const Right(null);
     } catch (e) {
       return Left(Failure(messageToDisplay: "Delete Leave Failed", errorObject: e));
     }
@@ -46,7 +46,7 @@ class LeaveRepoImpl implements LeaveRepo {
   Future<Either<Failure, void>> updateLeave(LeaveApplication leaveApplication) async {
     try {
       await localLeaveDS.updateLeave(LeaveApplicationModel.fromParent(leaveApplication));
-      return const Right(Unit);
+      return const Right(null);
     } catch (e) {
       return Left(Failure(messageToDisplay: "Update Leave Failed", errorObject: e));
     }

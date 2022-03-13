@@ -18,11 +18,11 @@ class LeaveProgressBar extends StatelessWidget {
           children: [
             Text(
               '$currentLeaveCount Leave',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             Text(
               '$maxLeaveCount Leaves',
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ],
         ),
