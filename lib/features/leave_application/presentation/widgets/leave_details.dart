@@ -38,13 +38,12 @@ class LeaveDetails extends StatelessWidget {
                   icon: Icons.calendar_month,
                   iconColor: const Color(0xffB787FC),
                 ),
-                if (leaveApplication.reason != null)
-                  _DetailCard(
-                    title: "Reason",
-                    detail: leaveApplication.reason!,
-                    icon: Icons.help_outline,
-                    iconColor: const Color(0xff73DEF3),
-                  ),
+                _DetailCard(
+                  title: "Reason",
+                  detail: leaveApplication.reason,
+                  icon: Icons.help_outline,
+                  iconColor: const Color(0xff73DEF3),
+                ),
                 _DetailCard(
                   title: "Type of Leave",
                   detail: leaveApplication.leaveType,

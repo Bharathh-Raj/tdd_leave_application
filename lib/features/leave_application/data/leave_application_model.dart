@@ -6,7 +6,7 @@ class LeaveApplicationModel extends LeaveApplication {
       required DateTime fromDate,
       DateTime? toDate,
       required String leaveType,
-      String? reason})
+      required String reason})
       : super(id: id, fromDate: fromDate, toDate: toDate, leaveType: leaveType, reason: reason);
 
   factory LeaveApplicationModel.fromParent(LeaveApplication leaveApplication) {
@@ -30,13 +30,12 @@ class LeaveApplicationModel extends LeaveApplication {
 
   factory LeaveApplicationModel.fromMap(Map<String, dynamic> map) {
     DateTime? toDate = map['toDate'] != null ? DateTime.parse(map['toDate'] as String) : null;
-    String? reason = map['reason'] != null ? map['reason'] as String : null;
     return LeaveApplicationModel(
       id: DateTime.parse(map['id'] as String),
       fromDate: DateTime.parse(map['fromDate'] as String),
       toDate: toDate,
       leaveType: map['leaveType'] as String,
-      reason: reason,
+      reason: map['reason'] as String,
     );
   }
 }

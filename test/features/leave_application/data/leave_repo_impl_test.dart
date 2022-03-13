@@ -21,10 +21,12 @@ void main() {
 
   group("Apply Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-        id: DateTime.now(),
-        leaveType: LeaveType.casualLeave,
-        fromDate: DateTime(2022),
-        toDate: DateTime(2023));
+      id: DateTime.now(),
+      leaveType: LeaveType.casualLeave,
+      fromDate: DateTime(2022),
+      toDate: DateTime(2023),
+      reason: "Fever",
+    );
 
     test("applyLeave() method of localLeaveDS should be called", () async {
       localTestHelper.setUpApplySuccess();
@@ -64,10 +66,12 @@ void main() {
 
   group("Delete Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-        id: DateTime.now(),
-        leaveType: LeaveType.casualLeave,
-        fromDate: DateTime(2022),
-        toDate: DateTime(2023));
+      id: DateTime.now(),
+      leaveType: LeaveType.casualLeave,
+      fromDate: DateTime(2022),
+      toDate: DateTime(2023),
+      reason: "Fever",
+    );
 
     test("deleteLeave() method from localLeaveDs instance should be called", () async {
       localTestHelper.setUpDeleteSuccess();
@@ -103,10 +107,12 @@ void main() {
 
   group("Update Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-        id: DateTime.now(),
-        leaveType: LeaveType.casualLeave,
-        fromDate: DateTime(2022),
-        toDate: DateTime(2023));
+      id: DateTime.now(),
+      leaveType: LeaveType.casualLeave,
+      fromDate: DateTime(2022),
+      toDate: DateTime(2023),
+      reason: "Fever",
+    );
 
     test("updateLeave() method from localLeaveDs instance should be called", () async {
       localTestHelper.setUpUpdateSuccess();

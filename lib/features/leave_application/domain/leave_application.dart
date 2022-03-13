@@ -6,14 +6,14 @@ class LeaveApplication {
   final DateTime fromDate;
   final DateTime? toDate;
   final String leaveType;
-  final String? reason;
+  final String reason;
 
   LeaveApplication({
     required this.id,
     required this.fromDate,
     this.toDate,
     required this.leaveType,
-    this.reason,
+    required this.reason,
   }) : assert(LeaveType.values.contains(leaveType), "Leave type is not valid.");
 
   @override
