@@ -9,8 +9,8 @@ import 'package:leave_application/features/leave_application/domain/use_cases/ap
 import 'package:leave_application/features/leave_application/domain/use_cases/fetch_leave_applications_use_case.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'features/leave_application/domain/use_cases/Delete_leave_use_case.dart';
 import 'features/leave_application/domain/use_cases/Update_leave_use_case.dart';
+import 'features/leave_application/domain/use_cases/delete_leave_use_case.dart';
 
 class ServiceLocator {
   ServiceLocator._();

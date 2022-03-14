@@ -9,6 +9,7 @@ import 'package:leave_application/features/leave_application/presentation/widget
 import 'package:leave_application/features/leave_application/presentation/widgets/dashboard_appbar.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_details.dart';
 
+import 'bloc/delete_leave/delete_leave_cubit.dart';
 import 'bloc/fetch_leave_applications/export.dart';
 import 'bloc/update_leave/export.dart';
 
@@ -42,9 +43,17 @@ class LeaveDashboardPage extends StatelessWidget {
                     return GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BlocProvider<UpdateLeaveCubit>(
-                                create: (context) =>
-                                    UpdateLeaveCubit(updateLeaveUseCase: GetIt.I()),
+                            builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider<UpdateLeaveCubit>(
+                                    create: (context) =>
+                                        UpdateLeaveCubit(updateLeaveUseCase: GetIt.I()),
+                                  ),
+                                  BlocProvider<DeleteLeaveCubit>(
+                                    create: (context) =>
+                                        DeleteLeaveCubit(deleteLeaveUseCase: GetIt.I()),
+                                  ),
+                                ],
                                 child: LeaveApplyPage(
                                   currentLeaveApplication: applicationsList[index],
                                 )),
