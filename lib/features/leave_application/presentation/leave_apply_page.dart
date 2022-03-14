@@ -33,12 +33,14 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
 
   @override
   void initState() {
-    calendarMonth = DateTime.now();
-    _yearList = List.generate(20, (index) => calendarMonth.year + index);
     selectedFromDate = widget.currentLeaveApplication?.fromDate;
     selectedToDate = widget.currentLeaveApplication?.toDate;
     leaveReason = widget.currentLeaveApplication?.reason;
     leaveType = widget.currentLeaveApplication?.leaveType ?? LeaveType.values.first;
+    calendarMonth = selectedFromDate != null
+        ? DateTime(selectedFromDate!.year, selectedFromDate!.month)
+        : DateTime.now();
+    _yearList = List.generate(20, (index) => DateTime.now().year + index);
     super.initState();
   }
 
