@@ -17,7 +17,7 @@ class LocalLeaveDataTestHelper {
           .toList();
 
   final LeaveApplication leaveApplication = LeaveApplication(
-      id: DateTime(2022, 3, 21),
+      id: DateTime(2022, 3, 21).toString(),
       fromDate: DateTime(2022, 3, 22),
       leaveType: LeaveType.casualLeave,
       reason: "Fever");

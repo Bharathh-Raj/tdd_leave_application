@@ -21,7 +21,7 @@ void main() {
 
   group("Apply Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-      id: DateTime.now(),
+      id: DateTime.now().toString(),
       leaveType: LeaveType.casualLeave,
       fromDate: DateTime(2022),
       toDate: DateTime(2023),
@@ -66,7 +66,7 @@ void main() {
 
   group("Delete Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-      id: DateTime.now(),
+      id: DateTime.now().toString(),
       leaveType: LeaveType.casualLeave,
       fromDate: DateTime(2022),
       toDate: DateTime(2023),
@@ -107,7 +107,7 @@ void main() {
 
   group("Update Leave", () {
     LeaveApplication leaveApplication = LeaveApplication(
-      id: DateTime.now(),
+      id: DateTime.now().toString(),
       leaveType: LeaveType.casualLeave,
       fromDate: DateTime(2022),
       toDate: DateTime(2023),

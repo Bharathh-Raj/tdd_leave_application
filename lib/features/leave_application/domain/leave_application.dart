@@ -2,7 +2,7 @@ import 'leave_type.dart';
 
 class LeaveApplication {
   /// id is just the applied DateTime
-  final DateTime id;
+  final String id;
   final DateTime fromDate;
   final DateTime? toDate;
   final String leaveType;

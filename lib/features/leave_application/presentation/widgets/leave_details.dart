@@ -16,7 +16,7 @@ class LeaveDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            leaveApplication.id.toDisplayDate(),
+            DateTime.parse(leaveApplication.id).toDisplayDate(),
             style: const TextStyle(
                 color: Color(0xff404655), fontSize: 16, fontWeight: FontWeight.w500),
           ),
