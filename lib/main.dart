@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: StringConstants.appTitle,
-      home: BlocProvider<FetchLeaveApplicationsCubit>(
-        create: (context) => FetchLeaveApplicationsCubit(fetchLeaveApplicationUseCase: GetIt.I()),
-        child: LeaveDashboardPage(),
+    return BlocProvider<FetchLeaveApplicationsCubit>(
+      create: (context) => FetchLeaveApplicationsCubit(fetchLeaveApplicationUseCase: GetIt.I()),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: StringConstants.appTitle,
+        home: LeaveDashboardPage(),
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:leave_application/features/leave_application/presentation/widget
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_type_widget.dart';
 
 import '../domain/leave_type.dart';
+import 'bloc/fetch_leave_applications/fetch_leave_applications_cubit.dart';
 
 class LeaveApplyPage extends StatefulWidget {
   final LeaveApplication? currentLeaveApplication;
@@ -46,188 +47,197 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              CustomPaint(
-                  painter: BGPainter(),
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Theme(
-                        data: ThemeData.dark(),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    icon: const Icon(Icons.arrow_back_ios_rounded)),
-                                DropdownButton<String>(
-                                  items: months
-                                      .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Center(
-                                            child: Text(
-                                              e,
-                                            ),
-                                          )))
-                                      .toList(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
-                                  dropdownColor: Colors.blueAccent,
-                                  value: months[calendarMonth.month - 1],
-                                  underline: const SizedBox(),
-                                  icon: const SizedBox(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      calendarMonth =
-                                          DateTime(calendarMonth.year, months.indexOf(value!) + 1);
-                                    });
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                DropdownButton<int>(
-                                  items: _yearList
-                                      .map((e) =>
-                                          DropdownMenuItem(value: e, child: Text(e.toString())))
-                                      .toList(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
-                                  dropdownColor: Colors.blueAccent,
-                                  value: calendarMonth.year,
-                                  underline: const SizedBox(),
-                                  icon: const SizedBox(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      calendarMonth = DateTime(value!, calendarMonth.month);
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                            // TODO: Builder needed?
-                            FormField(
-                              validator: (value) {
-                                if (selectedFromDate == null) {
-                                  return "Date Must be selected";
-                                }
-                                return null;
-                              },
-                              builder: (field) {
-                                return CustomCalendar(
-                                    calendarMonth: calendarMonth,
-                                    selectedFromDate: selectedFromDate,
-                                    selectedToDate: selectedToDate,
-                                    dateUpdateFunction: (DateTime selectedDay) {
+    return WillPopScope(
+      onWillPop: () {
+        context.read<FetchLeaveApplicationsCubit>().fetchLeaveApplications();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomPaint(
+                    painter: BGPainter(),
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Theme(
+                          data: ThemeData.dark(),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<FetchLeaveApplicationsCubit>()
+                                            .fetchLeaveApplications();
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: const Icon(Icons.arrow_back_ios_rounded)),
+                                  DropdownButton<String>(
+                                    items: months
+                                        .map((e) => DropdownMenuItem(
+                                            value: e,
+                                            child: Center(
+                                              child: Text(
+                                                e,
+                                              ),
+                                            )))
+                                        .toList(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
+                                    dropdownColor: Colors.blueAccent,
+                                    value: months[calendarMonth.month - 1],
+                                    underline: const SizedBox(),
+                                    icon: const SizedBox(),
+                                    onChanged: (value) {
                                       setState(() {
-                                        if (selectedFromDate == null) {
-                                          selectedFromDate = selectedDay;
-                                        } else if (selectedDay.isBefore(selectedFromDate!)) {
-                                          selectedFromDate = selectedDay;
-                                          selectedToDate = null;
-                                        } else if (selectedToDate == null) {
-                                          selectedToDate = selectedDay;
-                                        } else {
-                                          selectedFromDate = selectedDay;
-                                          selectedToDate = null;
-                                        }
+                                        calendarMonth = DateTime(
+                                            calendarMonth.year, months.indexOf(value!) + 1);
                                       });
-                                    });
-                              },
-                            ),
-                          ],
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  DropdownButton<int>(
+                                    items: _yearList
+                                        .map((e) =>
+                                            DropdownMenuItem(value: e, child: Text(e.toString())))
+                                        .toList(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
+                                    dropdownColor: Colors.blueAccent,
+                                    value: calendarMonth.year,
+                                    underline: const SizedBox(),
+                                    icon: const SizedBox(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        calendarMonth = DateTime(value!, calendarMonth.month);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // TODO: Builder needed?
+                              FormField(
+                                validator: (value) {
+                                  if (selectedFromDate == null) {
+                                    return "Date Must be selected";
+                                  }
+                                  return null;
+                                },
+                                builder: (field) {
+                                  return CustomCalendar(
+                                      calendarMonth: calendarMonth,
+                                      selectedFromDate: selectedFromDate,
+                                      selectedToDate: selectedToDate,
+                                      dateUpdateFunction: (DateTime selectedDay) {
+                                        setState(() {
+                                          if (selectedFromDate == null) {
+                                            selectedFromDate = selectedDay;
+                                          } else if (selectedDay.isBefore(selectedFromDate!)) {
+                                            selectedFromDate = selectedDay;
+                                            selectedToDate = null;
+                                          } else if (selectedToDate == null) {
+                                            selectedToDate = selectedDay;
+                                          } else {
+                                            selectedFromDate = selectedDay;
+                                            selectedToDate = null;
+                                          }
+                                        });
+                                      });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )),
-              const CurvedBox(),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    FormField(
-                      validator: (value) {
-                        if (!LeaveType.values.contains(leaveType)) {
-                          return "Must be a valid type";
-                        }
-                        return null;
-                      },
-                      builder: (field) => LeaveTypeWidget(
-                          selectedType: leaveType!,
-                          leaveTypeUpdateFunction: (String? selectedType) {
-                            setState(() {
-                              leaveType = selectedType;
-                            });
-                          }),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    FormField<String>(
+                    )),
+                const CurvedBox(),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      FormField(
                         validator: (value) {
-                          if (leaveReason == null || leaveReason!.isEmpty) {
-                            return "Reason must be filled";
+                          if (!LeaveType.values.contains(leaveType)) {
+                            return "Must be a valid type";
                           }
                           return null;
                         },
-                        builder: (field) => LeaveReasonWidget(
-                              reason: leaveReason,
-                              updateFunction: (value) {
-                                leaveReason = value;
-                              },
-                            )),
-                    Row(
-                      mainAxisAlignment: widget.currentLeaveApplication != null
-                          ? MainAxisAlignment.spaceBetween
-                          : MainAxisAlignment.center,
-                      children: [
-                        if (widget.currentLeaveApplication != null)
-                          TextButton(
+                        builder: (field) => LeaveTypeWidget(
+                            selectedType: leaveType!,
+                            leaveTypeUpdateFunction: (String? selectedType) {
+                              setState(() {
+                                leaveType = selectedType;
+                              });
+                            }),
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      FormField<String>(
+                          validator: (value) {
+                            if (leaveReason == null || leaveReason!.isEmpty) {
+                              return "Reason must be filled";
+                            }
+                            return null;
+                          },
+                          builder: (field) => LeaveReasonWidget(
+                                reason: leaveReason,
+                                updateFunction: (value) {
+                                  leaveReason = value;
+                                },
+                              )),
+                      Row(
+                        mainAxisAlignment: widget.currentLeaveApplication != null
+                            ? MainAxisAlignment.spaceBetween
+                            : MainAxisAlignment.center,
+                        children: [
+                          if (widget.currentLeaveApplication != null)
+                            TextButton(
+                                onPressed: () {
+                                  context
+                                      .read<DeleteLeaveCubit>()
+                                      .deleteLeave(widget.currentLeaveApplication!);
+                                },
+                                child: const Text("Delete Application")),
+                          ElevatedButton(
                               onPressed: () {
-                                context
-                                    .read<DeleteLeaveCubit>()
-                                    .deleteLeave(widget.currentLeaveApplication!);
-                              },
-                              child: const Text("Delete Application")),
-                        ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                LeaveApplication leaveApplication = LeaveApplication(
-                                    id: widget.currentLeaveApplication?.id ??
-                                        DateTime.now().toString(),
-                                    fromDate: selectedFromDate!,
-                                    toDate: selectedToDate,
-                                    leaveType: leaveType!,
-                                    reason: leaveReason!);
-                                if (widget.currentLeaveApplication == null) {
-                                  context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
-                                } else {
-                                  context.read<UpdateLeaveCubit>().updateLeave(leaveApplication);
-                                  //TODO: Call bloc
+                                if (_formKey.currentState!.validate()) {
+                                  LeaveApplication leaveApplication = LeaveApplication(
+                                      id: widget.currentLeaveApplication?.id ??
+                                          DateTime.now().toString(),
+                                      fromDate: selectedFromDate!,
+                                      toDate: selectedToDate,
+                                      leaveType: leaveType!,
+                                      reason: leaveReason!);
+                                  if (widget.currentLeaveApplication == null) {
+                                    context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
+                                  } else {
+                                    context.read<UpdateLeaveCubit>().updateLeave(leaveApplication);
+                                    //TODO: Call bloc
+                                  }
                                 }
-                              }
-                            },
-                            child: Text(widget.currentLeaveApplication == null
-                                ? "Apply for Leave"
-                                : "Update Leave")),
-                      ],
-                    )
-                  ],
+                              },
+                              child: Text(widget.currentLeaveApplication == null
+                                  ? "Apply for Leave"
+                                  : "Update Leave")),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
