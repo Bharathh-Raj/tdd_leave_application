@@ -7,10 +7,12 @@ import 'package:leave_application/features/leave_application/presentation/bloc/d
 import 'package:leave_application/features/leave_application/presentation/bloc/update_leave/update_leave_cubit.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/bg_paint.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
+import 'package:leave_application/features/leave_application/presentation/widgets/custom_button.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/custom_calendar.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_reason.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_type_widget.dart';
 
+import '../../../core/constants/color_constants.dart';
 import '../domain/leave_type.dart';
 import 'bloc/fetch_leave_applications/fetch_leave_applications_cubit.dart';
 
@@ -197,41 +199,56 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                                   leaveReason = value;
                                 },
                               )),
-                      Row(
-                        mainAxisAlignment: widget.currentLeaveApplication != null
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.center,
-                        children: [
-                          if (widget.currentLeaveApplication != null)
-                            TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<DeleteLeaveCubit>()
-                                      .deleteLeave(widget.currentLeaveApplication!);
-                                },
-                                child: const Text("Delete Application")),
-                          ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  LeaveApplication leaveApplication = LeaveApplication(
-                                      id: widget.currentLeaveApplication?.id ??
-                                          DateTime.now().toString(),
-                                      fromDate: selectedFromDate!,
-                                      toDate: selectedToDate,
-                                      leaveType: leaveType!,
-                                      reason: leaveReason!);
-                                  if (widget.currentLeaveApplication == null) {
-                                    context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
-                                  } else {
-                                    context.read<UpdateLeaveCubit>().updateLeave(leaveApplication);
-                                    //TODO: Call bloc
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: widget.currentLeaveApplication != null
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
+                          children: [
+                            if (widget.currentLeaveApplication != null)
+                              Expanded(
+                                child: CustomButton(
+                                    onTap: () {
+                                      context
+                                          .read<DeleteLeaveCubit>()
+                                          .deleteLeave(widget.currentLeaveApplication!);
+                                    },
+                                    text: "Delete"),
+                              ),
+                            if (widget.currentLeaveApplication != null)
+                              const SizedBox(
+                                width: 16,
+                              ),
+                            Expanded(
+                              child: CustomButton(
+                                text: widget.currentLeaveApplication == null
+                                    ? "Apply for Leave"
+                                    : "Update",
+                                onTap: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    LeaveApplication leaveApplication = LeaveApplication(
+                                        id: widget.currentLeaveApplication?.id ??
+                                            DateTime.now().toString(),
+                                        fromDate: selectedFromDate!,
+                                        toDate: selectedToDate,
+                                        leaveType: leaveType!,
+                                        reason: leaveReason!);
+                                    if (widget.currentLeaveApplication == null) {
+                                      context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
+                                    } else {
+                                      context
+                                          .read<UpdateLeaveCubit>()
+                                          .updateLeave(leaveApplication);
+                                      //TODO: Call bloc
+                                    }
                                   }
-                                }
-                              },
-                              child: Text(widget.currentLeaveApplication == null
-                                  ? "Apply for Leave"
-                                  : "Update Leave")),
-                        ],
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
