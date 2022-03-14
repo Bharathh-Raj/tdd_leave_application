@@ -22,9 +22,10 @@ class LeaveApplyPage extends StatefulWidget {
 }
 
 class _LeaveApplyPageState extends State<LeaveApplyPage> {
-  final DateTime calendarMonth = DateTime(2021, 5);
   final _formKey = GlobalKey<FormState>();
+  late final List<int> _yearList;
 
+  late DateTime calendarMonth;
   DateTime? selectedFromDate;
   DateTime? selectedToDate;
   String? leaveType;
@@ -32,6 +33,8 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
 
   @override
   void initState() {
+    calendarMonth = DateTime.now();
+    _yearList = List.generate(20, (index) => calendarMonth.year + index);
     selectedFromDate = widget.currentLeaveApplication?.fromDate;
     selectedToDate = widget.currentLeaveApplication?.toDate;
     leaveReason = widget.currentLeaveApplication?.reason;
@@ -63,14 +66,53 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                                       Navigator.of(context).pop();
                                     },
                                     icon: const Icon(Icons.arrow_back_ios_rounded)),
-                                Text(
-                                  calendarMonth.toMonth() + " " + calendarMonth.year.toString(),
+                                DropdownButton<String>(
+                                  items: months
+                                      .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Center(
+                                            child: Text(
+                                              e,
+                                            ),
+                                          )))
+                                      .toList(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline5!
+                                      .headline6!
                                       .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
+                                  dropdownColor: Colors.blueAccent,
+                                  value: months[calendarMonth.month - 1],
+                                  underline: const SizedBox(),
+                                  icon: const SizedBox(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      calendarMonth =
+                                          DateTime(calendarMonth.year, months.indexOf(value!) + 1);
+                                    });
+                                  },
                                 ),
-                                const Icon(Icons.keyboard_arrow_down_rounded)
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                DropdownButton<int>(
+                                  items: _yearList
+                                      .map((e) =>
+                                          DropdownMenuItem(value: e, child: Text(e.toString())))
+                                      .toList(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(fontWeight: FontWeight.w800, color: Colors.white),
+                                  dropdownColor: Colors.blueAccent,
+                                  value: calendarMonth.year,
+                                  underline: const SizedBox(),
+                                  icon: const SizedBox(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      calendarMonth = DateTime(value!, calendarMonth.month);
+                                    });
+                                  },
+                                ),
                               ],
                             ),
                             // TODO: Builder needed?
