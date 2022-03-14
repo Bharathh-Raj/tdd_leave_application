@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:leave_application/core/constants/string_constants.dart';
 import 'package:leave_application/features/leave_application/presentation/leave_dashboard_page.dart';
 import 'package:leave_application/service_locator.dart';
+
+import 'features/leave_application/presentation/bloc/fetch_leave_applications/fetch_leave_applications_cubit.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -24,7 +28,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: StringConstants.appTitle,
-      home: LeaveDashboardPage(),
+      home: BlocProvider<FetchLeaveApplicationsCubit>(
+        create: (context) => FetchLeaveApplicationsCubit(fetchLeaveApplicationUseCase: GetIt.I()),
+        child: LeaveDashboardPage(),
+      ),
     );
   }
 }

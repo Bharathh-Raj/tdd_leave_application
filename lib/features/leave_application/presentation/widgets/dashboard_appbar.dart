@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leave_application/core/constants/color_constants.dart';
+import 'package:leave_application/features/leave_application/presentation/bloc/fetch_leave_applications/export.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/custom_drawer.dart';
 
 import '../../../../core/constants/space_constants.dart';
@@ -56,10 +58,19 @@ class DashboardAppbar extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const LeaveProgressBar(
-                              currentLeaveCount: 4,
-                              maxLeaveCount: 12,
-                            ),
+                            BlocBuilder<FetchLeaveApplicationsCubit, FetchLeaveApplicationsState>(
+                                builder: (context, state) {
+                              return state.maybeMap(
+                                  orElse: () => const SizedBox(),
+                                  success: (successState) {
+                                    return LeaveProgressBar(
+                                      currentLeaveCount:
+                                          successState.leaveApplications?.length ?? 0,
+                                      maxLeaveCount: 12,
+                                    );
+                                  });
+                              // return
+                            }),
                           ],
                         ),
                       ),

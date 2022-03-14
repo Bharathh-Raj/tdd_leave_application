@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leave_application/core/extensions/date_display_extension.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
+import 'package:leave_application/features/leave_application/presentation/bloc/apply_leave/apply_leave_cubit.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/bg_paint.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/custom_calendar.dart';
@@ -138,7 +140,7 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                                   toDate: selectedToDate,
                                   leaveType: leaveType!,
                                   reason: leaveReason!);
-
+                              context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
                               //TODO: Call bloc
                             }
                           },
