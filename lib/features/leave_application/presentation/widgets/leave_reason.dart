@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 typedef LeaveReasonUpdateFunction = void Function(String value);
 
 class LeaveReasonWidget extends StatelessWidget {
+  final String? reason;
   final LeaveReasonUpdateFunction updateFunction;
-  const LeaveReasonWidget({Key? key, required this.updateFunction}) : super(key: key);
+  const LeaveReasonWidget({Key? key, required this.updateFunction, this.reason}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,8 @@ class LeaveReasonWidget extends StatelessWidget {
       const SizedBox(
         height: 8,
       ),
-      TextField(
+      TextFormField(
+        initialValue: reason,
         keyboardType: TextInputType.multiline,
         maxLines: 5,
         onChanged: updateFunction,

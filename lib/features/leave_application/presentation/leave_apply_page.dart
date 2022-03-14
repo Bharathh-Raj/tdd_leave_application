@@ -125,6 +125,7 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                           return null;
                         },
                         builder: (field) => LeaveReasonWidget(
+                              reason: leaveReason,
                               updateFunction: (value) {
                                 leaveReason = value;
                               },
