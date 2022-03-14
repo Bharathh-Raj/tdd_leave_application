@@ -59,7 +59,9 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                             Row(
                               children: [
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                     icon: const Icon(Icons.arrow_back_ios_rounded)),
                                 Text(
                                   calendarMonth.toMonth() + " " + calendarMonth.year.toString(),
