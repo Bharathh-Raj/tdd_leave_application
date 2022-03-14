@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
 import 'package:leave_application/features/leave_application/presentation/bloc/apply_leave/export.dart';
 import 'package:leave_application/features/leave_application/presentation/leave_apply_page.dart';
-import 'package:leave_application/features/leave_application/presentation/widgets/BgContainer.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/custom_button.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/dashboard_appbar.dart';
