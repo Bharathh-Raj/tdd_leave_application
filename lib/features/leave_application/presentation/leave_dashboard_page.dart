@@ -10,6 +10,7 @@ import 'package:leave_application/features/leave_application/presentation/widget
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_details.dart';
 
 import 'bloc/fetch_leave_applications/export.dart';
+import 'bloc/update_leave/export.dart';
 
 class LeaveDashboardPage extends StatelessWidget {
   const LeaveDashboardPage({Key? key}) : super(key: key);
@@ -38,7 +39,18 @@ class LeaveDashboardPage extends StatelessWidget {
                 return SliverList(
                     delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return LeaveDetails(leaveApplication: applicationsList[index]);
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BlocProvider<UpdateLeaveCubit>(
+                                create: (context) =>
+                                    UpdateLeaveCubit(updateLeaveUseCase: GetIt.I()),
+                                child: LeaveApplyPage(
+                                  currentLeaveApplication: applicationsList[index],
+                                )),
+                          ));
+                        },
+                        child: LeaveDetails(leaveApplication: applicationsList[index]));
                   },
                   childCount: applicationsList.length,
                 ));

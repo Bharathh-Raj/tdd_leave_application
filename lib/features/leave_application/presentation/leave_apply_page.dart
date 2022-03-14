@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leave_application/core/extensions/date_display_extension.dart';
 import 'package:leave_application/features/leave_application/domain/leave_application.dart';
 import 'package:leave_application/features/leave_application/presentation/bloc/apply_leave/apply_leave_cubit.dart';
+import 'package:leave_application/features/leave_application/presentation/bloc/update_leave/update_leave_cubit.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/bg_paint.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/custom_calendar.dart';
@@ -12,7 +13,8 @@ import 'package:leave_application/features/leave_application/presentation/widget
 import '../domain/leave_type.dart';
 
 class LeaveApplyPage extends StatefulWidget {
-  const LeaveApplyPage({Key? key}) : super(key: key);
+  final LeaveApplication? currentLeaveApplication;
+  const LeaveApplyPage({Key? key, this.currentLeaveApplication}) : super(key: key);
 
   @override
   State<LeaveApplyPage> createState() => _LeaveApplyPageState();
@@ -24,8 +26,17 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
 
   DateTime? selectedFromDate;
   DateTime? selectedToDate;
-  String? leaveType = LeaveType.values.first;
+  String? leaveType;
   String? leaveReason;
+
+  @override
+  void initState() {
+    selectedFromDate = widget.currentLeaveApplication?.fromDate;
+    selectedToDate = widget.currentLeaveApplication?.toDate;
+    leaveReason = widget.currentLeaveApplication?.reason;
+    leaveType = widget.currentLeaveApplication?.leaveType ?? LeaveType.values.first;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,16 +147,23 @@ class _LeaveApplyPageState extends State<LeaveApplyPage> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               LeaveApplication leaveApplication = LeaveApplication(
-                                  id: selectedFromDate!,
+                                  id: widget.currentLeaveApplication?.id ??
+                                      DateTime.now().toString(),
                                   fromDate: selectedFromDate!,
                                   toDate: selectedToDate,
                                   leaveType: leaveType!,
                                   reason: leaveReason!);
-                              context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
-                              //TODO: Call bloc
+                              if (widget.currentLeaveApplication == null) {
+                                context.read<ApplyLeaveCubit>().applyLeave(leaveApplication);
+                              } else {
+                                context.read<UpdateLeaveCubit>().updateLeave(leaveApplication);
+                                //TODO: Call bloc
+                              }
                             }
                           },
-                          child: const Text("Apply for Leave")),
+                          child: Text(widget.currentLeaveApplication == null
+                              ? "Apply for Leave"
+                              : "Update Leave")),
                     )
                   ],
                 ),
