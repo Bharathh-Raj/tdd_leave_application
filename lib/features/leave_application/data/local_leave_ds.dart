@@ -22,7 +22,7 @@ class LocalLeaveDSImpl implements LocalLeaveDS {
   @override
   List<LeaveApplicationModel>? fetchLeaveApplications() {
     List<Map<String, dynamic>> leaveApplicationsMap =
-        hiveBox.values.map((e) => Map<String, dynamic>.from(e)).toList();
+        hiveBox.values.map((e) => Map<String, dynamic>.from(e)).toList().reversed.toList();
 
     if (leaveApplicationsMap.isEmpty) return null;
 
