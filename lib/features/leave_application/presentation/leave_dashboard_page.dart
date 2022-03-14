@@ -6,6 +6,7 @@ import 'package:leave_application/features/leave_application/presentation/bloc/a
 import 'package:leave_application/features/leave_application/presentation/leave_apply_page.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/BgContainer.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/curved_box.dart';
+import 'package:leave_application/features/leave_application/presentation/widgets/custom_button.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/dashboard_appbar.dart';
 import 'package:leave_application/features/leave_application/presentation/widgets/leave_details.dart';
 
@@ -73,23 +74,19 @@ class LeaveDashboardPage extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-        width: 180,
+        width: 200,
         height: 68,
         padding: const EdgeInsets.only(bottom: 24),
-        child: BgContainer(
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => BlocProvider<ApplyLeaveCubit>(
-                    create: (context) => ApplyLeaveCubit(applyLeaveUseCase: GetIt.I()),
-                    child: const LeaveApplyPage()),
-              ));
-            },
-            child: const Text("Apply for Leave"),
-            shape:
-                const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
-          ),
+        child: CustomButton(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BlocProvider<ApplyLeaveCubit>(
+                  create: (context) => ApplyLeaveCubit(applyLeaveUseCase: GetIt.I()),
+                  child: const LeaveApplyPage()),
+            ));
+          },
+          borderRadius: 24,
+          text: "Apply for leave",
         ),
       ),
     );

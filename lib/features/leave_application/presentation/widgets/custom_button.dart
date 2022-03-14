@@ -5,7 +5,9 @@ import '../../../../core/constants/color_constants.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  const CustomButton({Key? key, required this.text, required this.onTap}) : super(key: key);
+  final double borderRadius;
+  const CustomButton({Key? key, required this.text, required this.onTap, this.borderRadius = 4})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,9 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: SizedBox.expand(
         child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            gradient: LinearGradient(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+            gradient: const LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
               colors: [
